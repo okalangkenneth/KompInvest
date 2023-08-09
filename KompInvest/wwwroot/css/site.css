@@ -1,0 +1,165 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: #333; /* Darker color for the brand text */
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: #f0f0f0 !important; /* Light grey background */
+}
+
+/* Provide sufficient contrast against white background */
+    .navbar .navbar-brand,
+    .navbar .nav-item .nav-link {
+        color: #333 !important; /* Darker color for the text */
+    }
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('/images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    margin-bottom: 0; /* Remove the existing margin-bottom */
+}
+
+main {
+    flex-grow: 1;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 40px; /* Reduced height */
+    text-align: center;
+    background-color: #333;
+    color: white;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.chatbot-ui {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px; /* Set the width */
+    height: 60px; /* Set the height */
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+.chatbot-icon {
+    width: 60px; /* Same as the container */
+    height: 60px; /* Same as the container */
+    border-radius: 50%; /* Make the icon round */
+    display: block;
+}
+
+body {
+    background: #333;
+    background-image: url('/images');
+    background-size: cover;
+    background-attachment: fixed;
+    color: white; /* Set the default text color to white */
+}
+
+.header-content {
+    background: rgba(0.0, 0.0, 0.0, 0.5); /* Increase the opacity to make the background darker */
+    color: white;
+    padding: 60px;
+    text-align: center;
+}
+/* ... existing styles ... */
+
+/* Bold text class */
+.bold-text {
+    font-weight: bold;
+}
+
+/* Different font sizes */
+.font-size-36 {
+    font-size: 36px;
+}
+
+.font-size-28 {
+    font-size: 28px;
+}
+
+.facebook-icon i {
+    color: #1877F2 !important;
+}
+
+.instagram-icon i {
+    color: #C13584 !important;
+}
+
+.linkedin-icon i {
+    color: #0A66C2 !important;
+}
+
+
+
+
+
+
