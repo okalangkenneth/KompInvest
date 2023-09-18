@@ -1,10 +1,11 @@
-﻿using KompInvest.Models;  
+﻿using KompInvest.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KompInvest.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<User>  // Inherits from IdentityDbContext and use User model
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser> 
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -1,11 +1,7 @@
 ﻿using KompInvest.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace KompInvest.Controllers
 {
@@ -19,6 +15,10 @@ namespace KompInvest.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Message()
         {
             return View();
         }

@@ -24,7 +24,8 @@
                 <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Member Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:openLoginModal()">Member Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="javascript:openRegisterModal()">Register</a></li>
             </ul>
             <ul class="navbar-nav ml-auto social-icons">
                 <li class="nav-item"><a href="#" class="nav-link facebook-icon"><i class="fab fa-facebook-f"></i></a></li>
@@ -44,6 +45,23 @@
         @RenderBody()
     </main>
 
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="registerModalContent">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -55,14 +73,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="loginForm" novalidate>
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
                         </div>
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <div class="invalid-feedback">Please enter your password.</div>
                         </div>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>
@@ -70,7 +90,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Chatbot UI -->
     <div class="chatbot-ui" id="chatbotUI" onclick="toggleChatbot()">
@@ -81,18 +100,112 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script>
-        // Gradual fade-in effect for the background image
-        $(document).ready(function () {
-            $('body').hide().fadeIn(4000); // 4000 milliseconds (4 seconds)
-        });
-
-        function toggleChatbot() {
-            $('#chatbotUI').toggle();
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Expose your functions to the global scope if needed
+            window.toggleChatbot = toggleChatbot;
+            window.openLoginModal = openLoginModal;
+            window.openRegisterModal = openRegisterModal;
+
+            // Gradual fade-in effect for the background image
+            $('body').hide().fadeIn(4000);
+
+            // Toggle chatbot UI
+            function toggleChatbot() {
+                $('#chatbotUI').toggle();
+            }
+
+            // Open login modal
+            function openLoginModal() {
+                console.log("Opening Login Modal...");
+                loadModalContent('/Account/Login', '#loginModal', '#loginModal .modal-body');
+            }
+
+            // Open register modal
+            function openRegisterModal() {
+                console.log("Opening Register Modal...");
+                loadModalContent('/Account/Register', '#registerModal', '#registerModalContent');
+            }
+
+            // Load modal content
+            function loadModalContent(url, modalId, contentId) {
+                $(contentId).load(url, function (response, status, xhr) {
+                    if (status === "error") {
+                        console.error(`Error loading modal from ${url}: ${xhr.status} ${xhr.statusText}`);
+                    }
+                    $(modalId).modal('show');
+                });
+            }
+
+            // Extract form validation to a separate function
+            function validateForm(formElement) {
+                var isValid = formElement.checkValidity();
+                if (!isValid) {
+                    event.stopPropagation();
+                }
+                formElement.classList.add('was-validated');
+                return isValid;
+            }
+
+            // Extract AJAX request to a separate function
+            function performAjaxRequest(formElement, successCallback) {
+                $.ajax({
+                    url: $(formElement).attr('action'),
+                    type: 'POST',
+                    data: $(formElement).serialize(),
+                    success: successCallback,
+                    error: handleError
+                });
+            }
+
+            // Handle success response for login
+            function handleLoginSuccess(response) {
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else {
+                    $('#loginModal .modal-body').html(response);
+                    $('#loginModal').modal('show');
+                }
+            }
+
+            // Handle success response for registration
+            function handleRegisterSuccess(response) {
+                if (response.message) {
+                    alert(response.message); // You can replace this with a more elegant notification
+                    $('#registerModal').modal('hide');  // Hide the registration form
+                    window.location.href = "/Home/Index"; // Redirect to Home page
+                }
+            }
+
+
+            // Handle error response
+            function handleError(xhr, status, error) {
+                alert('An error occurred: ' + xhr.status + ' ' + xhr.statusText);
+            }
+
+            // AJAX form submission for login
+            $('#loginForm').on('submit', function (event) {
+                event.preventDefault();
+                if (validateForm(this)) {
+                    performAjaxRequest(this, handleLoginSuccess);
+                }
+            });
+
+            // AJAX form submission for registration
+            $('#registerForm').on('submit', function (event) {
+                event.preventDefault();
+                if (validateForm(this)) {
+                    performAjaxRequest(this, handleRegisterSuccess);
+                }
+            });
+        });
+
+
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
     <footer class="bg-dark text-white text-center py-3">

@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model List<IdentityUser>
+
+<h1 class="mb-4">Admin Panel</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a class="btn btn-success" href="@Url.Action("ApproveUser", "Admin", new { userId = user.Id })">Approve</a>
+                    <a class="btn btn-danger" href="@Url.Action("RejectUser", "Admin", new { userId = user.Id })">Reject</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
