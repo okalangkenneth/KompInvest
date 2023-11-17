@@ -7,22 +7,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#"><img src="~/images/LogoMakr-45B09I.png" alt="Logo" class="logo"> <strong>KOMPISAR INVESTMENT CLUB</strong></a>
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")"><img src="~/images/LogoMakr-45B09I.png" alt="Logo" class="logo"> <strong>KOMPISAR INVESTMENT CLUB</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Blog/News</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
+                <li class="nav-item active"><a class="nav-link" href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("About", "Home")">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("News", "Home")">Blog/News</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("Events", "Home")">Events</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("Resources", "Home")">Resources</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="javascript:openLoginModal()">Member Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="javascript:openRegisterModal()">Register</a></li>
@@ -99,7 +99,12 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        if (typeof jQuery == 'undefined') {
+            document.write(unescape("%3Cscript src='/path/to/local/jquery-3.7.1.min.js' type='text/javascript'%3E%3C/script%3E"));
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -153,57 +158,57 @@
 
             // Extract AJAX request to a separate function
             function performAjaxRequest(formElement, successCallback) {
+                console.log("Performing AJAX request...");
                 $.ajax({
                     url: $(formElement).attr('action'),
                     type: 'POST',
                     data: $(formElement).serialize(),
                     success: successCallback,
-                    error: handleError
+                    error: function (xhr, status, error) {
+                        alert('An error occurred: ' + xhr.status + ' ' + xhr.statusText);
+                    }
                 });
-            }
-
-            // Handle success response for login
-            function handleLoginSuccess(response) {
-                if (response.redirect) {
-                    window.location.href = response.redirect;
-                } else {
-                    $('#loginModal .modal-body').html(response);
-                    $('#loginModal').modal('show');
-                }
-            }
-
-            // Handle success response for registration
-            function handleRegisterSuccess(response) {
-                if (response.message) {
-                    alert(response.message); // You can replace this with a more elegant notification
-                    $('#registerModal').modal('hide');  // Hide the registration form
-                    window.location.href = "/Home/Index"; // Redirect to Home page
-                }
-            }
-
-
-            // Handle error response
-            function handleError(xhr, status, error) {
-                alert('An error occurred: ' + xhr.status + ' ' + xhr.statusText);
             }
 
             // AJAX form submission for login
             $('#loginForm').on('submit', function (event) {
                 event.preventDefault();
                 if (validateForm(this)) {
-                    performAjaxRequest(this, handleLoginSuccess);
+                    performAjaxRequest(this, function (response) {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            $('#loginModal .modal-body').html(response);
+                            $('#loginModal').modal('show');
+                        }
+                    });
                 }
             });
 
             // AJAX form submission for registration
             $('#registerForm').on('submit', function (event) {
                 event.preventDefault();
-                if (validateForm(this)) {
-                    performAjaxRequest(this, handleRegisterSuccess);
-                }
+                console.log("Form submitted, performing AJAX request...");  // Debugging line
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        console.log("AJAX Success:", response);  // Debugging line
+                        if (response.status === "success") {
+                            alert(response.message);  // Show pop-up message
+                        } else {
+                            alert("Registration failed: " + response.message);  // Show pop-up message for failure as well
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("AJAX Error:", xhr, status, error);  // Debugging line
+                        alert('An error occurred: ' + xhr.status + ' ' + xhr.statusText);
+                    }
+                });
             });
-        });
 
+        });
 
     </script>
 

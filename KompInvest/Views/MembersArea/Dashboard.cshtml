@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Member Dashboard";
+}
+
+<main role="main" class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <!-- Member investment performance chart -->
+    <section id="investment-performance">
+        <h2>Your Investment Performance</h2>
+        <!-- You could use a charting library like Chart.js or Google Charts here -->
+        <div id="investmentChart"></div>
+    </section>
+
+    <!-- Member investment details in a table format -->
+    <section id="investment-details">
+        <h2>Detailed Investment Report</h2>
+        <p>Here is your investment performance over time:</p>
+        <!-- Embed an Excel-like data grid or table here -->
+    </section>
+
+    <!-- Other member-specific data and actions -->
+    <section id="member-actions">
+        <h2>Quick Actions</h2>
+        <a href="#" class="btn btn-primary">Add Funds</a>
+        <a href="#" class="btn btn-primary">Withdraw Funds</a>
+    </section>
+
+    <!-- Additional sections can include:
+         - Recent Transactions
+         - Upcoming Investment Opportunities
+         - Alerts and Notifications
+         - Educational Resources Specifically Curated for the Member
+         - News and Articles Relevant to the Member's Investment Interests
+    -->
+</main>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('investmentChart').getContext('2d');
+        var investmentChart = new Chart(ctx, {
+            // Chart configuration...
+        });
+    </script>
+}
+

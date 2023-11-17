@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Portfolio";
+}
+
+<main role="main" class="container">
+    <h1>@ViewData["Title"]</h1>
+    <p>Our investment club prides itself on a diversified investment portfolio tailored to maximize returns while mitigating risk. Below is an overview of our primary investment categories:</p>
+
+    <section id="unit-trusts">
+        <h2>Unit Trusts</h2>
+        <p>Our selection of unit trusts focuses on long-term capital growth and liquidity. We invest in a variety of sectors, including technology, healthcare, and consumer goods, to ensure a balanced approach to market fluctuations.</p>
+        <!-- Interactive chart or table of unit trust performance -->
+    </section>
+
+    <section id="bonds">
+        <h2>Bonds</h2>
+        <p>We maintain a robust portfolio of government and corporate bonds that provide steady income through fixed interest rates. Our bond strategy is designed to preserve capital and ensure stable cash flow.</p>
+        <!-- Interactive chart or table of bond performance -->
+    </section>
+
+    <section id="real-estate">
+        <h2>Real Estate</h2>
+        <p>Real estate investments offer the club tangible assets that appreciate over time. Our real estate holdings include both residential and commercial properties, with a focus on emerging markets and areas with high growth potential.</p>
+        <!-- Interactive chart or table of real estate performance -->
+    </section>
+
+    <p>For more detailed information on our investment strategies and to discuss how you can become a member, <a href="@Url.Action("Contact", "Home")">contact us</a>.</p>
+</main>

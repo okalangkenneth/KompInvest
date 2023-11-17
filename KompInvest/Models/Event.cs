@@ -6,22 +6,22 @@ namespace KompInvest.Models
     public class Event
     {
         [Key]
-        public int EventId { get; set; }
+        public int EventID { get; set; }
+
+        [Required, StringLength(100)]
+        public string Title { get; set; }
+
+        [Required, StringLength(1000)]
+        public string Description { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string EventName { get; set; }
-
-        [Required]
-        public string Location { get; set; }
-
-        [DataType(DataType.Date)]
         public DateTime EventDate { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
+        [StringLength(200)]
+        public string Location { get; set; }
 
-        public virtual User User { get; set; }  
+        [Required]
+        public bool IsMembersOnly { get; set; }
     }
 
 }

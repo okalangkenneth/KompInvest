@@ -4,29 +4,32 @@ using System.ComponentModel.DataAnnotations;
 using KompInvest.Models;
 using Microsoft.AspNetCore.Identity;
 
-public class User : IdentityUser 
+public class User
 {
-    
+    [Key]
+    public int UserID { get; set; }
+
+    [Required, StringLength(50)]
+    public string Username { get; set; }
 
     [Required]
-    public DateTime RegistrationDate { get; set; } 
+    public string PasswordHash { get; set; }
 
-    [Required(ErrorMessage = "Role is required")]
-    public string Role { get; set; } // (Member/Admin)
+    [Required, EmailAddress, StringLength(100)]
+    public string Email { get; set; }
 
-    public bool IsVerified { get; set; } 
+    [Required, StringLength(50)]
+    public string FirstName { get; set; }
 
-    [StringLength(200, ErrorMessage = "Profile Picture URL cannot be longer than 200 characters.")]
-    public string ProfilePictureUrl { get; set; }
-    
-    public virtual ICollection<Blog> Blogs { get; set; }
-    public virtual ICollection<Comment> Comments { get; set; }
-    public virtual ICollection<Event> Events { get; set; }
-    public virtual ICollection<ForumPost> ForumPosts { get; set; }
-    public virtual ICollection<Investment> Investments { get; set; }
-    public virtual ICollection<Resource> Resources { get; set; }
-    public virtual UserProfile UserProfile { get; set; }
+    [Required, StringLength(50)]
+    public string LastName { get; set; }
 
+    [Required]
+    public DateTime DateJoined { get; set; }
 
-    // Add error handling and further validation logic here.
+    [Required]
+    public bool IsAdmin { get; set; }
+
+    // Navigation Property for MemberProfile
+    public virtual MemberProfile MemberProfile { get; set; }
 }

@@ -5,20 +5,22 @@ namespace KompInvest.Models
     public class Resource
     {
         [Key]
-        public int ResourceId { get; set; }
+        public int ResourceID { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string ResourceName { get; set; }
+        [Required, StringLength(100)]
+        public string Title { get; set; }
 
-        public string ResourceURL { get; set; }
+        [Required, StringLength(1000)]
+        public string Description { get; set; }
 
-        public byte[] ResourceFile { get; set; }  // If you want to store the file itself in the database
+        [Required, StringLength(50)]
+        public string ResourceType { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
+        [Required, Url]
+        public string Link { get; set; }
 
-        public virtual User User { get; set; }  
+        [StringLength(200)]
+        public string ThumbnailImage { get; set; }
     }
 
 }

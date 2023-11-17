@@ -1,11 +1,15 @@
-﻿<main role="main" class="pb-3">
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main role="main" class="pb-3">
     <div class="container">
         <!-- About Us Section -->
         <section class="row my-5 p-3">
             <div class="col-md-12">
                 <h2 class="bold-text font-size-28">About Us</h2>
                 <p>Our mission is to empower individuals through investment knowledge and collective action. Our core values include integrity, collaboration, and innovation.</p>
-                <a href="#" class="btn btn-primary">Learn More</a>
+                <a href="@Url.Action("About", "Home")" class="btn btn-primary">Learn More</a>
             </div>
         </section>
 
@@ -13,18 +17,32 @@
         <section class="row my-5 p-3">
             <div class="col-md-12">
                 <h2 class="bold-text font-size-28">Investment Portfolio</h2>
-                <p>Explore our diverse investment portfolio, including stocks, bonds, real estate, and more.</p>
-                <!-- Add charts or graphs here -->
-                <a href="#" class="btn btn-primary">View Portfolio</a>
+                <p>Explore our diverse investment portfolio, including Unit Trusts, Bonds, and Real Estate.</p>
+                <a href="@Url.Action("Portfolio", "Home")" class="btn btn-primary">View Portfolio</a>
+                <br><br> <!-- Spacing -->
+            </div>
+
+            <!-- Row for Charts -->
+            <div class="row">
+                <div class="col-md-4 chart-container">
+                    <div id="chart_unit_trusts" class="google-chart"></div>
+                </div>
+                <div class="col-md-4 chart-container">
+                    <div id="chart_bonds" class="google-chart"></div>
+                </div>
+                <div class="col-md-4 chart-container">
+                    <div id="chart_real_estate" class="google-chart"></div>
+                </div>
             </div>
         </section>
 
-        <!-- News Section -->
+
+        <!-- Testimonials Section -->
         <section class="row my-5 p-3">
             <div class="col-md-12">
-                <h2 class="bold-text font-size-28">Latest News</h2>
-                <p>Stay up to date with the latest investment trends, market insights, and club news. Our news section provides valuable information to keep you informed and ahead of the curve.</p>
-                <a href="#" class="btn btn-primary">Read News</a>
+                <h2 class="bold-text font-size-28">Member Testimonials</h2>
+                <p>Read about the experiences of our members and their success stories.</p>
+                <a href="@Url.Action("Testimonials", "Home")" class="btn btn-primary">Read Testimonials</a>
             </div>
         </section>
 
@@ -32,37 +50,60 @@
         <section class="row my-5 p-3">
             <div class="col-md-12">
                 <h2 class="bold-text font-size-28">Upcoming Events</h2>
-                <p>Join us at our upcoming events, workshops, and seminars. Engage with industry experts, network with fellow investors, and enhance your investment skills. Don't miss out!</p>
-                <a href="#" class="btn btn-primary">View Events</a>
+                <p>Join us in our upcoming events and meetings to learn more about investment opportunities.</p>
+                <a href="@Url.Action("Events", "Home")" class="btn btn-primary">View Events</a>
             </div>
         </section>
-        <!-- Testimonials Section -->
+
+        <!-- News and Updates Section -->
         <section class="row my-5 p-3">
             <div class="col-md-12">
-                <h2 class="bold-text font-size-28">Testimonials</h2>
-                <div class="row">
-                    <div class="col-md-4">
-                        <blockquote>
-                            <p>"An amazing investment club with a strong community spirit!"</p>
-                            <footer>- Member A</footer>
-                        </blockquote>
-                    </div>
-                    <div class="col-md-4">
-                        <blockquote>
-                            <p>"I've learned so much and seen great returns on my investments."</p>
-                            <footer>- Member B</footer>
-                        </blockquote>
-                    </div>
-                    <div class="col-md-4">
-                        <blockquote>
-                            <p>"Trustworthy and professional. Highly recommended!"</p>
-                            <footer>- Business Partner</footer>
-                        </blockquote>
-                    </div>
-                </div>
+                <h2 class="bold-text font-size-28">News and Updates</h2>
+                <p>Stay updated with the latest news in the investment world.</p>
+                <a href="@Url.Action("News", "Home")" class="btn btn-primary">Read News</a>
             </div>
         </section>
     </div>
 </main>
 
-<!-- ... existing footer and chatbot content ... -->
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawChart('Unit Trusts', 'chart_unit_trusts');
+            drawChart('Bonds', 'chart_bonds');
+            drawChart('Real Estate', 'chart_real_estate');
+        }
+
+        function drawChart(investmentType, elementId) {
+            var data = google.visualization.arrayToDataTable([
+                ['Month', 'Revenue'],
+                ['Jan', Math.random() * 10000],
+                ['Feb', Math.random() * 10000],
+                ['Mar', Math.random() * 10000],
+                // ... other months ...
+                ['Dec', Math.random() * 10000]
+            ]);
+
+            var options = {
+                title: investmentType + ' Investment Performance',
+                width: 350, // Set the width
+                height: 300, // Set the height
+                chartArea: { width: '70%', height: '70%' }, // Adjust chart area
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(elementId));
+            chart.draw(data, options);
+        }
+
+    </script>
+}
+
+
+
+

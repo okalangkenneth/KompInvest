@@ -5,88 +5,91 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KompInvest.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser> 
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        // DbSets
-        public DbSet<Blog> Blogs { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<ForumPost> ForumPosts { get; set; }
+        // Define DbSets for each model
+        public DbSet<User> Users { get; set; }
+        public DbSet<MemberProfile> MemberProfiles { get; set; }
         public DbSet<Investment> Investments { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<NewsArticle> NewsArticles { get; set; }
         public DbSet<Resource> Resources { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
 
-        // Fluent API configurations
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);  // Important: This line has to be first.
+            base.OnModelCreating(modelBuilder);
 
-            // User to Blog: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Blogs)
-                        .WithOne(b => b.User)
-                        .HasForeignKey(b => b.UserId);
+            // Define relationships and any additional configurations
 
-            // User to Comment: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Comments)
-                        .WithOne(c => c.Commenter)
-                        .HasForeignKey(c => c.CommenterUserId);
+            // MemberProfile to User relationship
+            modelBuilder.Entity<MemberProfile>()
+                .HasOne(mp => mp.User)
+                .WithOne(u => u.MemberProfile)
+                .HasForeignKey<MemberProfile>(mp => mp.MemberID);
 
-            // Blog to Comment: One-to-Many
-            modelBuilder.Entity<Blog>()
-                        .HasMany(b => b.Comments)
-                        .WithOne(c => c.Blog)
-                        .HasForeignKey(c => c.BlogId);
-
-            // User to Event: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Events)
-                        .WithOne(e => e.User)
-                        .HasForeignKey(e => e.UserId);
-
-            // User to ForumPost: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.ForumPosts)
-                        .WithOne(fp => fp.Author)
-                        .HasForeignKey(fp => fp.AuthorUserId);
-
-            // User to Investment: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Investments)
-                        .WithOne(i => i.User)
-                        .HasForeignKey(i => i.UserId);
-
-            // User to Resource: One-to-Many
-            modelBuilder.Entity<User>()
-                        .HasMany(u => u.Resources)
-                        .WithOne(r => r.User)
-                        .HasForeignKey(r => r.UserId);
-
-            // User to UserProfile: One-to-One
-            modelBuilder.Entity<User>()
-                        .HasOne(u => u.UserProfile)
-                        .WithOne(up => up.User)
-                        .HasForeignKey<UserProfile>(up => up.UserId);
-            // Set precision for decimal type
+            // Investment to MemberProfile relationship
             modelBuilder.Entity<Investment>()
-                        .Property(p => p.Amount)
-                        .HasPrecision(18, 2);
+                .HasOne(i => i.MemberProfile)
+                .WithMany(mp => mp.Investments)
+                .HasForeignKey(i => i.MemberID);
 
-            // Update delete behavior for Comment -> Blog relation
-            modelBuilder.Entity<Comment>()
-                .HasOne(c => c.Blog)
-                .WithMany(b => b.Comments)
-                .HasForeignKey(c => c.BlogId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Transaction relationships
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.Investment)
+                .WithMany(i => i.Transactions)
+                .HasForeignKey(t => t.InvestmentID);
+
+            // Testimonial to MemberProfile relationship
+            modelBuilder.Entity<Testimonial>()
+                .HasOne(t => t.MemberProfile)
+                .WithMany(mp => mp.Testimonials)
+                .HasForeignKey(t => t.MemberID);
+
+            // Additional configurations as needed
+
+            // Unique Constraints
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            // Cascade Delete
+            modelBuilder.Entity<MemberProfile>()
+                .HasOne(mp => mp.User)
+                .WithOne(u => u.MemberProfile)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Specify Table Names
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<MemberProfile>().ToTable("MemberProfiles");
+            modelBuilder.Entity<Investment>().ToTable("Investments");
+            modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<Event>().ToTable("Events");
+            modelBuilder.Entity<NewsArticle>().ToTable("NewsArticles");
+            modelBuilder.Entity<Resource>().ToTable("Resources");
+            modelBuilder.Entity<Testimonial>().ToTable("Testimonials");
+
+            // Configure Indices
+            modelBuilder.Entity<Investment>()
+                .HasIndex(i => new { i.MemberID, i.DateInvested });
+
+            modelBuilder.Entity<Transaction>()
+                .HasIndex(t => t.TransactionDate);
+
+            modelBuilder.Entity<NewsArticle>()
+                .HasIndex(na => na.PublicationDate);
         }
-
     }
 }
+
 

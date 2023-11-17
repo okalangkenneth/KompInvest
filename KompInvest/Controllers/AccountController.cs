@@ -38,6 +38,8 @@ namespace KompInvest.Controllers
         {
             try
             {
+                bool isAjaxRequest = HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+
                 if (ModelState.IsValid)
                 {
                     var user = new IdentityUser { UserName = model.Username, Email = model.Email };
@@ -46,25 +48,32 @@ namespace KompInvest.Controllers
                     if (result.Succeeded)
                     {
                         await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsApproved", "false"));
+                        _logger.LogInformation($"User registered: {user.UserName}");
 
-                        if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                        if (isAjaxRequest)
                         {
-                            return Json(new { message = "Registration successful. Awaiting admin approval." });
+                            return Json(new { status = "success", message = "Registration successful. Awaiting admin approval." });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
                         }
 
-                        TempData["Message"] = "Registration successful. Awaiting admin approval.";
-                        return RedirectToAction("Message", "Home");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
+                        if (isAjaxRequest)
+                        {
+                            return Json(new { status = "failure", message = "Registration failed." });
+                        }
                     }
                 }
-
-                if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                else
                 {
-                    return Json(new { error = "Registration failed." });
+                    if (isAjaxRequest)
+                    {
+                        return Json(new { status = "failure", message = "Invalid model state." });
+                    }
                 }
 
                 return View(model);
@@ -72,14 +81,15 @@ namespace KompInvest.Controllers
             catch (InvalidOperationException iex)
             {
                 _logger.LogError($"InvalidOperationException occurred: {iex.Message}");
-                return View("Error"); // You can redirect to a generic error page
+                return View("Error");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"General exception occurred: {ex.Message}");
-                return View("Error"); // You can redirect to a generic error page
+                _logger.LogError($"Exception occurred during registration: {ex.Message}, Username: {model.Username}");
+                return View("Error");
             }
         }
+
 
 
 
