@@ -1,4 +1,5 @@
 using KompInvest.Data;
+using KompInvest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,8 +24,24 @@ namespace KompInvest
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Build the connection string using the DATABASE_URL environment variable
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+            // Check if a DATABASE_URL is provided, which indicates we are running on Heroku
+            if (!string.IsNullOrEmpty(databaseUrl))
+            {
+                // Parse the connection string
+                var databaseUri = new Uri(databaseUrl);
+                var userInfo = databaseUri.UserInfo.Split(':');
+
+                // Build the connection string using Npgsql format
+                connectionString = $"Host={databaseUri.Host};Database={databaseUri.LocalPath.TrimStart('/')};" +
+                    $"Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=True";
+            }
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(connectionString));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -37,6 +54,8 @@ namespace KompInvest
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+            services.AddHostedService<RoleInitializer>();
+
             services.AddControllersWithViews();
 
             services.AddSingleton(x => new SendGridClient(Configuration["SendGrid:ApiKey"]));
@@ -45,6 +64,7 @@ namespace KompInvest
 
             services.AddRazorPages();
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
@@ -77,22 +97,6 @@ namespace KompInvest
                 endpoints.MapRazorPages();
             });
 
-            CreateRoles(serviceProvider).Wait();
-        }
-
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            string[] roleNames = { "Admin", "User" };
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
         }
     }
 }
