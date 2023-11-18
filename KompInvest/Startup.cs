@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using System;
-using System.Threading.Tasks;
 
 namespace KompInvest
 {
@@ -85,6 +85,9 @@ namespace KompInvest
                 app.UseHsts();
             }
 
+            SeedDatabase(serviceProvider);
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -103,6 +106,23 @@ namespace KompInvest
                 endpoints.MapRazorPages();
             });
 
+        }
+        private void SeedDatabase(IServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var scopedServices = scope.ServiceProvider;
+                try
+                {
+                    SeedData.Initialize(scopedServices).Wait();
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions, you might want to log this
+                    var logger = scopedServices.GetRequiredService<ILogger<Startup>>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
+            }
         }
     }
 }
