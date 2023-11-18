@@ -25,20 +25,8 @@ namespace KompInvest
         public void ConfigureServices(IServiceCollection services)
         {
             // Build the connection string using the DATABASE_URL environment variable
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-
-            // Check if a DATABASE_URL is provided, which indicates we are running on Heroku
-            if (!string.IsNullOrEmpty(databaseUrl))
-            {
-                // Parse the connection string
-                var databaseUri = new Uri(databaseUrl);
-                var userInfo = databaseUri.UserInfo.Split(':');
-
-                // Build the connection string using Npgsql format
-                connectionString = $"Host={databaseUri.Host};Database={databaseUri.LocalPath.TrimStart('/')};" +
-                    $"Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=True";
-            }
+            var connectionString = GetHerokuConnectionString() ??
+                                   Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
@@ -63,6 +51,24 @@ namespace KompInvest
             services.AddSession();
 
             services.AddRazorPages();
+        }
+        private string GetHerokuConnectionString()
+        {
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+            // Check if a DATABASE_URL is provided, which indicates we are running on Heroku
+            if (!string.IsNullOrEmpty(databaseUrl))
+            {
+                // Parse the connection string
+                var databaseUri = new Uri(databaseUrl);
+                var userInfo = databaseUri.UserInfo.Split(':');
+
+                // Build the connection string using Npgsql format
+                return $"Host={databaseUri.Host};Database={databaseUri.LocalPath.TrimStart('/')};" +
+                       $"Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=True";
+            }
+
+            return null;
         }
 
 
