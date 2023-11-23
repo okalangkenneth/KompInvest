@@ -1,1 +1,2 @@
 web: dotnet bin/Release/net6.0/publish/KompInvest.dll
+release: dotnet ef database update
