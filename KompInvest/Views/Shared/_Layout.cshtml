@@ -37,9 +37,10 @@
 
 
     <!-- Banner Section -->
-    <header class="text-center py-5 header-content" style="background-image: url('/images/background_1.jpg'); background-size: cover; height: 400px;">
+    <header class="header-content">
         <h1 class="text-white">Investing Together, Growing Together</h1>
     </header>
+
 
     <main role="main" class="pb-3">
         @RenderBody()
@@ -214,9 +215,20 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <ul class="nav justify-content-center">
+                <li class="nav-item"><a class="nav-link text-white" href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="@Url.Action("About", "Home")">About Us</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="@Url.Action("News", "Home")">Blog/News</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="@Url.Action("Events", "Home")">Events</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="@Url.Action("Resources", "Home")">Resources</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="javascript:openLoginModal()">Member Login</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="javascript:openRegisterModal()">Register</a></li>
+            </ul>
+        </div>
         <p>&copy; 2023 Kompisar Investment Club. All rights reserved.</p>
     </footer>
+
 </body>
-</html>
-
-
+</html>﻿

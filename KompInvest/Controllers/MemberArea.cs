@@ -2,7 +2,7 @@
 
 namespace KompInvest.Controllers
 {
-    public class Member : Controller
+    public class MemberArea : Controller
     {
         public IActionResult Dashboard()
         {

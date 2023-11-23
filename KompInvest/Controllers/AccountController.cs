@@ -47,13 +47,22 @@ namespace KompInvest.Controllers
 
                     if (result.Succeeded)
                     {
+                        // Add any additional claims or operations right after the user is created
                         await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("IsApproved", "false"));
                         _logger.LogInformation($"User registered: {user.UserName}");
 
+                        // Here, instead of directly returning a JSON response,
+                        // set TempData which will be available for the next request.
+                        TempData["SuccessMessage"] = "Registration successful. Awaiting admin approval.";
+
                         if (isAjaxRequest)
                         {
-                            return Json(new { status = "success", message = "Registration successful. Awaiting admin approval." });
+                            // For AJAX, return a JSON response that indicates where to redirect.
+                            return Json(new { status = "success", message = "Registration successful. Awaiting admin approval.", redirectUrl = Url.Action("RegistrationConfirmation", "Account") });
                         }
+
+                        // For non-AJAX requests, redirect to a confirmation action.
+                        return RedirectToAction("RegistrationConfirmation", "Account");
                     }
                     else
                     {
@@ -76,6 +85,7 @@ namespace KompInvest.Controllers
                     }
                 }
 
+                // If we reach this point, return the original view with the model to show validation errors.
                 return View(model);
             }
             catch (InvalidOperationException iex)
@@ -90,8 +100,13 @@ namespace KompInvest.Controllers
             }
         }
 
-
-
+        [HttpGet]
+        public IActionResult RegistrationConfirmation()
+        {
+            // Retrieve the message set in the Register action method
+            ViewBag.SuccessMessage = TempData["SuccessMessage"] ?? "Default message if TempData is empty.";
+            return View();
+        }
 
 
         [HttpGet]

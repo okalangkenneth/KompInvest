@@ -69,7 +69,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url('/images/background.jpg');
+    /*background: #333 url('/images/background.jpg') no-repeat center center fixed;*/
     background-size: cover;
     background-attachment: fixed;
     margin-bottom: 0; /* Remove the existing margin-bottom */
@@ -80,18 +80,18 @@ main {
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
+    position: relative; /* Changed from absolute to avoid overlap */
     width: 100%;
-    line-height: 40px; /* Reduced height */
+    line-height: 40px;
     text-align: center;
     background-color: #333;
     color: white;
 }
 
+
 .logo {
-    width: 50px;
-    height: 50px;
+    width: 5em; /* was 50px */
+    height: auto; /* maintain aspect ratio */
 }
 
 .chatbot-ui {
@@ -116,21 +116,19 @@ main {
     display: block;
 }
 
-body {
-    background: #333;
-    background-image: url('/images');
+/*body {
+    background: #333 url('/images/background_1.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-attachment: fixed;
-    color: white; /* Set the default text color to white */
-}
+    color: white;
+    font-size: 1rem;*/ /* Base font size; adjust as needed */
+/*}*/
 
 .header-content {
-    background: rgba(0.0, 0.0, 0.0, 0.5); /* Increase the opacity to make the background darker */
-    color: white;
-    padding: 60px;
+    background: url('/images/background_1.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 20vh 0; /* Use viewport height for top and bottom padding */
     text-align: center;
 }
-/* ... existing styles ... */
 
 /* Bold text class */
 .bold-text {
@@ -282,6 +280,38 @@ ul {
 #member-actions .btn {
     margin-right: 10px;
 }
+@media (max-width: 768px) {
+    .header-content {
+        padding: 10vh 0; /* Increase padding for smaller screens */
+    }
+
+    h1 {
+        font-size: 2.5rem; /* Adjust font size for smaller screens */
+    }
+}
+.container {
+    overflow-x: auto; /* Allows horizontal scrolling if content overflows */
+}
+footer .nav-link {
+    color: #fff; /* White text for links */
+    transition: color 0.3s; /* Smooth transition for hover effect */
+}
+
+    footer .nav-link:hover {
+        color: #aaa; /* Lighter text on hover for better interaction feedback */
+    }
+
+/* Footer adjustments for a better layout */
+.footer {
+    padding: 1rem 0;
+    background-color: #333; /* Dark background for footer */
+    color: white; /* White text color */
+    border-top: 1px solid #474747; /* A subtle top border can be added for visual separation */
+}
+
+
+
+
 
 /* Add more styles as needed */
 

@@ -13,14 +13,19 @@ namespace KompInvest.Services
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             // Add specific roles
-            string[] roleNames = { "Admin", "User", "Manager" }; // Modify as per your roles
+            string[] roleNames = { "Admin", "User", "Manager" };
             foreach (var roleName in roleNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
                     // Create the roles and seed them to the database
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                    var createRoleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                    if (!createRoleResult.Succeeded)
+                    {
+                        // Handle role creation failure
+                        throw new InvalidOperationException($"Failed to create role {roleName}");
+                    }
                 }
             }
 
@@ -31,7 +36,7 @@ namespace KompInvest.Services
                 Email = "adminuser@example.com",
             };
 
-            string userPWD = "SuperSecretPassword";
+            string userPWD = "Omolokonyo1@";
             var user = await userManager.FindByEmailAsync("adminuser@example.com");
 
             if (user == null)
@@ -40,10 +45,20 @@ namespace KompInvest.Services
                 if (createPowerUser.Succeeded)
                 {
                     // Assign the new user the "Admin" role 
-                    await userManager.AddToRoleAsync(poweruser, "Admin");
+                    var addToRoleResult = await userManager.AddToRoleAsync(poweruser, "Admin");
+                    if (!addToRoleResult.Succeeded)
+                    {
+                        // Handle role assignment failure
+                        throw new InvalidOperationException("Failed to assign Admin role to super user");
+                    }
+                }
+                else
+                {
+                    // Handle user creation failure
+                    throw new InvalidOperationException("Failed to create super user");
                 }
             }
         }
     }
-
 }
+
