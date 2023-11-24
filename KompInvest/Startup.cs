@@ -1,5 +1,5 @@
 using KompInvest.Data;
-using KompInvest.Services;
+//using KompInvest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +42,7 @@ namespace KompInvest
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddHostedService<RoleInitializer>();
+            //services.AddHostedService<RoleInitializer>();
 
             services.AddControllersWithViews();
 
@@ -85,7 +85,7 @@ namespace KompInvest
                 app.UseHsts();
             }
 
-            SeedDatabase(serviceProvider);
+            //SeedDatabase(serviceProvider);
 
 
             app.UseHttpsRedirection();
@@ -107,23 +107,23 @@ namespace KompInvest
             });
 
         }
-        private void SeedDatabase(IServiceProvider serviceProvider)
-        {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                try
-                {
-                    SeedData.Initialize(scopedServices).Wait();
-                }
-                catch (Exception ex)
-                {
-                    // Handle exceptions, you might want to log this
-                    var logger = scopedServices.GetRequiredService<ILogger<Startup>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
-            }
-        }
+        //private void SeedDatabase(IServiceProvider serviceProvider)
+        //{
+        //    using (var scope = serviceProvider.CreateScope())
+        //    {
+        //        var scopedServices = scope.ServiceProvider;
+        //        try
+        //        {
+        //            SeedData.Initialize(scopedServices).Wait();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exceptions, you might want to log this
+        //            var logger = scopedServices.GetRequiredService<ILogger<Startup>>();
+        //            logger.LogError(ex, "An error occurred seeding the DB.");
+        //        }
+        //    }
+        //}
     }
 }
 
