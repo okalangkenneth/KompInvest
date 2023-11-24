@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using System;
+using System.Linq;
 
 namespace KompInvest
 {
@@ -71,8 +73,17 @@ namespace KompInvest
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+                // Check if the AspNetRoles table exists by trying to fetch a record
+                var hasRoles = dbContext.Roles.Any();
+                logger.LogInformation($"AspNetRoles table exists: {hasRoles}");
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
