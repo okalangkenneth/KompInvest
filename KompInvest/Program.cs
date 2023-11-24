@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace KompInvest
 {
@@ -11,10 +12,17 @@ namespace KompInvest
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+            webBuilder.ConfigureKestrel(serverOptions =>
+            {
+                // Bind to the port provided by Heroku
+                int port = int.Parse(Environment.GetEnvironmentVariable("PORT") ?? "5000");
+                serverOptions.ListenAnyIP(port);
+            });
+        });
+
     }
 }
