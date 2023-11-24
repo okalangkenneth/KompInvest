@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace KompInvest.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class ReInitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

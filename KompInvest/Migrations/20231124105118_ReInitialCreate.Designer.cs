@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KompInvest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231117201559_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231124105118_ReInitialCreate")]
+    partial class ReInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
