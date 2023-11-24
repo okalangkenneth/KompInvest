@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-KompInvest-8507BF40-DCF1-4610-B37C-460195ECBBA5</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    
   </PropertyGroup>
 
   <ItemGroup>
