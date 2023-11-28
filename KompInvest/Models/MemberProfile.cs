@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KompInvest.Models
 {
     public class MemberProfile
     {
-        [Key, ForeignKey("User")]
+        [Key]
         public int MemberID { get; set; }
 
         [Required]
@@ -29,9 +29,8 @@ namespace KompInvest.Models
         public DateTime MemberSince { get; set; }
 
         // Navigation Properties
-        public virtual User User { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<Investment> Investments { get; set; }
         public virtual ICollection<Testimonial> Testimonials { get; set; }
     }
-
 }

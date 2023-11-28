@@ -1,11 +1,10 @@
 ﻿using KompInvest.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KompInvest.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -13,7 +12,6 @@ namespace KompInvest.Data
         }
 
         // Define DbSets for each model
-        public DbSet<User> Users { get; set; }
         public DbSet<MemberProfile> MemberProfiles { get; set; }
         public DbSet<Investment> Investments { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -28,9 +26,9 @@ namespace KompInvest.Data
 
             // Define relationships and any additional configurations
 
-            // MemberProfile to User relationship
+            // MemberProfile to ApplicationUser relationship
             modelBuilder.Entity<MemberProfile>()
-                .HasOne(mp => mp.User)
+                .HasOne(mp => mp.ApplicationUser)
                 .WithOne(u => u.MemberProfile)
                 .HasForeignKey<MemberProfile>(mp => mp.MemberID);
 
@@ -54,23 +52,7 @@ namespace KompInvest.Data
 
             // Additional configurations as needed
 
-            // Unique Constraints
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
-
-            // Cascade Delete
-            modelBuilder.Entity<MemberProfile>()
-                .HasOne(mp => mp.User)
-                .WithOne(u => u.MemberProfile)
-                .OnDelete(DeleteBehavior.Cascade);
-
             // Specify Table Names
-            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<MemberProfile>().ToTable("MemberProfiles");
             modelBuilder.Entity<Investment>().ToTable("Investments");
             modelBuilder.Entity<Transaction>().ToTable("Transactions");
@@ -91,5 +73,6 @@ namespace KompInvest.Data
         }
     }
 }
+
 
 

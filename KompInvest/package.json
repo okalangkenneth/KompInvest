@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@aws-cdk/core": "^1.19.0",
+    "aws-cdk": "^1.204.0",
+    "aws-sdk": "latest",
+    "bootstrap": "^5.2.3",
+    "which": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
