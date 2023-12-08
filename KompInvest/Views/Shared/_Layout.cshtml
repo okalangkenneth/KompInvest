@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - KOMPINVEST</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
 
@@ -23,10 +23,15 @@
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("News", "Home")">Blog/News</a></li>
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Events", "Home")">Events</a></li>
                 <li class="nav-item"><a class="nav-link" href="@Url.Action("Resources", "Home")">Resources</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="@Url.Action("Contact", "Home")">Contact Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="javascript:openLoginModal()">Member Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="javascript:openRegisterModal()">Register</a></li>
+                @* <li class="nav-item"><a class="nav-link" href="javascript:openRegisterModal()">Register</a></li> *@
+                <!-- Correct placement for the Learn More button -->
+                <li class="nav-item">
+                    <a href="@Url.Action("LearnMore", "Home")" class="learn-more-btn">Learn More</a>
+                </li>
             </ul>
+
             <ul class="navbar-nav ml-auto social-icons">
                 <li class="nav-item"><a href="#" class="nav-link facebook-icon"><i class="fab fa-facebook-f"></i></a></li>
                 <li class="nav-item"><a href="#" class="nav-link instagram-icon"><i class="fab fa-instagram"></i></a></li>

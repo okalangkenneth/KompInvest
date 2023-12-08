@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<main role="main" class="container">
+    <h1>@ViewData["Title"]</h1>
+    <p>If you have any questions or would like to get in touch with us, please find our contact details below or use the provided map to find our locations.</p>
+
+    <div class="row">
+        <!-- Contact Details for USA -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <h3>United States</h3>
+            <address>
+                123 Liberty St.<br>
+                New York, NY 10005<br>
+                USA<br>
+                <abbr title="Phone">P:</abbr> (123) 456-7890
+            </address>
+            <div id="map-usa" class="map-container mb-3">
+                <!-- Replace the src with the actual Google Maps link -->
+                <iframe src="https://maps.google.com/maps?q=New+York,NY+10005&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+
+        <!-- Contact Details for Uganda -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <h3>Uganda</h3>
+            <address>
+                456 Kampala Rd.<br>
+                Kampala 256<br>
+                Uganda<br>
+                <abbr title="Phone">P:</abbr> (256) 789-0123
+            </address>
+            <div id="map-uganda" class="map-container mb-3">
+                <!-- Replace the src with the actual Google Maps link -->
+                <iframe src="https://maps.google.com/maps?q=Kampala+256&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+
+        <!-- Contact Details for UK -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <h3>United Kingdom</h3>
+            <address>
+                789 Abbey Rd.<br>
+                London SW1A 1AA<br>
+                UK<br>
+                <abbr title="Phone">P:</abbr> (020) 7946-0123
+            </address>
+            <div id="map-uk" class="map-container mb-3">
+                <!-- Replace the src with the actual Google Maps link -->
+                <iframe src="https://maps.google.com/maps?q=London+SW1A+1AA&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+
+        <!-- Contact Details for Sweden -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <h3>Sweden</h3>
+            <address>
+                1012 Stockholm St.<br>
+                100 44 Stockholm<br>
+                Sweden<br>
+                <abbr title="Phone">P:</abbr> (46) 8123-4567
+            </address>
+            <div id="map-sweden" class="map-container mb-3">
+                <!-- Replace the src with the actual Google Maps link -->
+                <iframe src="https://maps.google.com/maps?q=Stockholm+100+44&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                        frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+@section Scripts {
+    <!-- Include any scripts here if needed -->
+}
+

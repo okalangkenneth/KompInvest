@@ -128,7 +128,13 @@ main {
     background-size: cover;
     padding: 20vh 0; /* Use viewport height for top and bottom padding */
     text-align: center;
+    margin-bottom: 6rem; /* Adds 2rem of space below the header image */
 }
+
+.container > h1 {
+    margin-bottom: 3rem; /* Adjust the space as needed */
+}
+
 
 /* Bold text class */
 .bold-text {
@@ -228,17 +234,9 @@ main {
         background-color: #007bff;
         border-color: #007bff;
     }
-.resource-list {
-    margin-top: 20px;
-}
-
-.resource-category {
-    margin-bottom: 40px;
-}
-
 .resource-icon {
-    width: 64px; /* Or any size you prefer */
-    height: 64px; /* Or any size you prefer */
+    width: 64px; /* Or your preferred size */
+    height: 64px; /* Or your preferred size */
     margin-bottom: 10px;
 }
 
@@ -247,6 +245,18 @@ main {
     height: auto; /* Maintain aspect ratio */
     max-width: 300px; /* Maximum size */
     margin-bottom: 10px;
+}
+
+.resource-category h2 {
+    margin-top: 20px;
+}
+
+.resource-list {
+    margin-top: 20px;
+}
+
+.resource-category {
+    margin-bottom: 40px;
 }
 
 ul {
@@ -308,6 +318,43 @@ footer .nav-link {
     color: white; /* White text color */
     border-top: 1px solid #474747; /* A subtle top border can be added for visual separation */
 }
+/* Increase specificity for the Learn More button */
+.navbar .navbar-nav .nav-item .learn-more-btn {
+    background-color: #D26A7B; /* Dark pink color */
+    color: white !important; /* Ensuring the text color is white */
+    padding: 10px 20px;
+    border-radius: 30px; /* Oval shape */
+    text-decoration: none !important;
+    transition: background-color 0.3s ease;
+    border: none; /* No border */
+    display: inline-block; /* For proper spacing and alignment */
+    margin-left: 10px; /* Space from the neighboring element */
+}
+
+    /* Ensuring the hover effect is also specific */
+    .navbar .navbar-nav .nav-item .learn-more-btn:hover {
+        background-color: #BF5A6C; /* Darker shade for hover effect */
+        color: white !important; /* Ensuring the text color is white on hover */
+    }
+
+/* Adjustments for responsive behavior */
+@media (max-width: 768px) {
+    .navbar .navbar-nav .nav-item .learn-more-btn {
+        padding: 8px 16px; /* Slightly smaller padding on smaller screens */
+        font-size: 0.9em; /* Adjust font size for smaller screens */
+    }
+}
+.map-container {
+    height: 250px; /* Set the height for the map containers */
+}
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+    }
+
+
+
 
 
 
